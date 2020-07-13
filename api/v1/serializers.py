@@ -56,7 +56,6 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
             if all(credentials.values()):
                 user = authenticate(**credentials)
                 login(self.context['request'], user)
-                print(self.context['request'].user)
                 if user:
                     payload = jwt_payload_handler(user)
                     return {
@@ -99,8 +98,6 @@ class RatioSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user': {'read_only': True}}
 
     def create(self, validated_data):
-        print('mark_1', dir(self.context['request']))
-        print('mark_2', self.context['request'].user)
         ratio, created = Ratio.objects.get_or_create(
             post_id=validated_data.pop('post_id'),
             user=self.context['request'].user
